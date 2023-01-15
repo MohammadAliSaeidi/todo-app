@@ -1,0 +1,7 @@
+.add-task-input-container {
+	display: flex;
+}
+
+.add-task-input {
+	flex-grow: 1;
+}
