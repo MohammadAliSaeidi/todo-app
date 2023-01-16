@@ -1,12 +1,15 @@
 import React from 'react'
 import './AddTaskInput.css'
+import Button from '@mui/material/Button';
+
+import TextField from '@mui/material/TextField';
 
 export default function AddTaskInput()
 {
 	return (
 		<div className='add-task-input-container'>
-			<input className='input add-task-input' type="text" placeholder='Add a Task' />
-			<input className='button add-task-button' type="button" value={'+'} />
+			<TextField id="outlined-basic" label='Add a Task' fullWidth={true} variant="filled" />
+			<Button variant="contained">Add</Button>
 		</div>
 	)
 }
