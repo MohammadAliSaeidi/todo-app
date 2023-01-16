@@ -1,5 +1,9 @@
 import React from 'react'
+
+import Checkbox from '@mui/material/Checkbox';
+
 import './TodoItem.css'
+import './Checkbox.css'
 
 export default function TodoItem(props)
 {
@@ -10,7 +14,7 @@ export default function TodoItem(props)
 	return (
 		<div className={taskClassName}>
 
-			<input type="checkbox" checked={props.done} />
+			<Checkbox onChange={(e) => { props.handleOnTaskChecked(e, props.taskId) }} checked={props.done} />
 			{props.task}
 
 		</div>
