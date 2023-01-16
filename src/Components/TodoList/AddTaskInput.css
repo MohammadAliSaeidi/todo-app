@@ -2,6 +2,7 @@
 	display: flex;
 	padding: 10px;
 	gap: 10px;
+	align-items: center;
 }
 
 .add-task-input {
@@ -13,8 +14,9 @@
 }
 
 .add-task-button {
-	width: 48px;
-	height: 48px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50px;
 	border-width: 0px;
+	cursor: pointer;
 }
