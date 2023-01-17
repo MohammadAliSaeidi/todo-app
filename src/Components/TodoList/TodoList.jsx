@@ -4,36 +4,42 @@ import TasksContainer from './TasksContainer'
 
 import './TodoList.css'
 
-export default class TodoList extends Component
-{
-	constructor(props)
-	{
+export default class TodoList extends Component {
+	constructor(props) {
 		super(props);
 		this.state = {
+
+			currentListId: 1,
+
 			tasks: [
 				{
-					text: 'Wash the dishes',
+					listId: 1,
 					taskId: 0,
+					text: 'Wash the dishes',
 					done: false
 				},
 				{
-					text: 'Turn off the TV',
+					listId: 1,
 					taskId: 1,
+					text: 'Turn off the TV',
 					done: false
 				},
 				{
-					text: 'Create react project',
+					listId: 1,
 					taskId: 2,
+					text: 'Create react project',
 					done: false
 				},
 				{
-					text: 'Wake up',
+					listId: 1,
 					taskId: 3,
+					text: 'Wake up',
 					done: true
 				},
 				{
-					text: 'Brush your teeth',
+					listId: 1,
 					taskId: 4,
+					text: 'Brush your teeth',
 					done: true
 				},
 			],
@@ -42,13 +48,14 @@ export default class TodoList extends Component
 		this.handleOnTaskChecked = this.handleOnTaskChecked.bind(this);
 	}
 
-	handleOnTaskChecked(event, taskId)
-	{
-		this.setState(state =>
-		{
+	handleOnTaskChecked(event, taskId) {
+
+		console.log(this.state.tasks.find(task => task.listId === this.state.currentListId && task.taskId === taskId));
+
+		this.setState(prevState => {
 			return {
-				tasks: state.tasks.map(task =>
-				{
+				...prevState,
+				tasks: prevState.tasks.map(task =>{
 					if (taskId === task.taskId)
 					{
 						return {
@@ -62,11 +69,12 @@ export default class TodoList extends Component
 		});
 	}
 
-	render()
-	{
+	render() {
+		const tasks = this.state.tasks.filter(task => task.listId === this.state.currentListId);
+		console.log(tasks);
 		return (
 			<div className='panel todo-list'>
-				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={this.state.tasks} />
+				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={tasks} />
 				<AddTaskInput />
 			</div>
 		)
