@@ -85,35 +85,13 @@ export default class TodoList extends Component
 		this.setState(prevState =>
 		{
 			return {
+				...prevState,
 				tasks: [
 					...prevState.tasks,
 					{
-
-						text: taskStr,
+						listId: prevState.currentListId,
 						taskId: (prevState.tasks.at(-1).taskId) + 1,
-						done: false
-					}
-				]
-			}
-		});
-	}
-
-	handleOnAddTask(event, taskStr)
-	{
-		if (taskStr === "")
-		{
-			return;
-		}
-
-		this.setState(prevState =>
-		{
-			return {
-				tasks: [
-					...prevState.tasks,
-					{
-
 						text: taskStr,
-						taskId: (prevState.tasks.at(-1).taskId) + 1,
 						done: false
 					}
 				]
