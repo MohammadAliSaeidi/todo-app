@@ -10,30 +10,38 @@ export default class TodoList extends Component
 	{
 		super(props);
 		this.state = {
+
+			currentListId: 1,
+
 			tasks: [
 				{
-					text: 'Wash the dishes',
+					listId: 1,
 					taskId: 0,
+					text: 'Wash the dishes',
 					done: false
 				},
 				{
-					text: 'Turn off the TV',
+					listId: 1,
 					taskId: 1,
+					text: 'Turn off the TV',
 					done: false
 				},
 				{
-					text: 'Create react project',
+					listId: 1,
 					taskId: 2,
+					text: 'Create react project',
 					done: false
 				},
 				{
-					text: 'Wake up',
+					listId: 1,
 					taskId: 3,
+					text: 'Wake up',
 					done: true
 				},
 				{
-					text: 'Brush your teeth',
+					listId: 1,
 					taskId: 4,
+					text: 'Brush your teeth',
 					done: true
 				},
 			],
@@ -45,10 +53,14 @@ export default class TodoList extends Component
 
 	handleOnTaskChecked(event, taskId)
 	{
-		this.setState(state =>
+
+		console.log(this.state.tasks.find(task => task.listId === this.state.currentListId && task.taskId === taskId));
+
+		this.setState(prevState =>
 		{
 			return {
-				tasks: state.tasks.map(task =>
+				...prevState,
+				tasks: prevState.tasks.map(task =>
 				{
 					if (taskId === task.taskId)
 					{
@@ -86,11 +98,36 @@ export default class TodoList extends Component
 		});
 	}
 
+	handleOnAddTask(event, taskStr)
+	{
+		if (taskStr === "")
+		{
+			return;
+		}
+
+		this.setState(prevState =>
+		{
+			return {
+				tasks: [
+					...prevState.tasks,
+					{
+
+						text: taskStr,
+						taskId: (prevState.tasks.at(-1).taskId) + 1,
+						done: false
+					}
+				]
+			}
+		});
+	}
+
 	render()
 	{
+		const tasks = this.state.tasks.filter(task => task.listId === this.state.currentListId);
+		console.log(tasks);
 		return (
 			<div className='panel todo-list'>
-				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={this.state.tasks} />
+				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={tasks} />
 				<AddTaskInput handleOnAddTask={this.handleOnAddTask} />
 			</div>
 		)
