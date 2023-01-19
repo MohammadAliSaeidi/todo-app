@@ -3,6 +3,8 @@ import TodoItem from './TodoItem/TodoItem.jsx';
 
 export default function TasksContainer(props)
 {
+	let hasCompleteTask = false;
+
 	const tasks = props.tasks.map((task) =>
 	{
 		if (!task.done)
@@ -17,19 +19,24 @@ export default function TasksContainer(props)
 	const doneTasks = props.tasks.map((task) =>
 	{
 		if (task.done)
+		{
+			hasCompleteTask = true;
+
 			return <TodoItem
 				handleOnTaskChecked={props.handleOnTaskChecked}
 				task={task.text}
 				done={task.done}
 				key={task.taskId}
 				taskId={task.taskId} />
+		}
+
 		return null;
 	});
 
 	return (
 		<>
 			{tasks}
-			<h2>Completed tasks</h2>
+			{hasCompleteTask ? <h2>Completed tasks</h2> : null}
 			{doneTasks}
 		</>
 	)

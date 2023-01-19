@@ -40,6 +40,7 @@ export default class TodoList extends Component
 		};
 
 		this.handleOnTaskChecked = this.handleOnTaskChecked.bind(this);
+		this.handleOnAddTask = this.handleOnAddTask.bind(this);
 	}
 
 	handleOnTaskChecked(event, taskId)
@@ -62,12 +63,35 @@ export default class TodoList extends Component
 		});
 	}
 
+	handleOnAddTask(event, taskStr)
+	{
+		if (taskStr === "")
+		{
+			return;
+		}
+
+		this.setState(prevState =>
+		{
+			return {
+				tasks: [
+					...prevState.tasks,
+					{
+
+						text: taskStr,
+						taskId: (prevState.tasks.at(-1).taskId) + 1,
+						done: false
+					}
+				]
+			}
+		});
+	}
+
 	render()
 	{
 		return (
 			<div className='panel todo-list'>
 				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={this.state.tasks} />
-				<AddTaskInput />
+				<AddTaskInput handleOnAddTask={this.handleOnAddTask} />
 			</div>
 		)
 	}
