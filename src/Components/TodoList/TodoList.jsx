@@ -1,7 +1,7 @@
 import React, { Component, useState } from 'react'
 import AddTaskInput from './AddTaskInput'
 import TasksContainer from './TasksContainer'
-import SideBar from './SideBar/SideBar.jsx'
+import Sidebar from './SideBar/Sidebar.jsx'
 
 import './TodoList.css'
 
@@ -9,10 +9,16 @@ export default function TodoList()
 {
 	const [currentListId, setCurrentListId] = useState(1);
 
-	const [lists, setLists] = useState({
-		listId: 1,
-		listName: 'Daily tasks'
-	});
+	const [lists, setLists] = useState([
+		{
+			listId: 1,
+			listName: 'Daily tasks'
+		},
+		{
+			listId: 2,
+			listName: 'Word tasks'
+		}
+	]);
 
 	const [tasks, setTasks] = useState([
 		{
@@ -45,21 +51,28 @@ export default function TodoList()
 			text: 'Brush your teeth',
 			done: true
 		},
+		{
+			listId: 2,
+			taskId: 5,
+			text: "commit changes on todo-app project",
+			done: false
+		}
 	]);
 
 	function handleOnTaskChecked(event, taskId)
 	{
-		setTasks(tasks.map(task =>
-		{
-			if (taskId === task.taskId)
+		setTasks(
+			tasks.map(task =>
 			{
-				return {
-					...task,
-					done: event.target.checked
+				if (taskId === task.taskId)
+				{
+					return {
+						...task,
+						done: event.target.checked
+					}
 				}
-			}
-			return task;
-		}));
+				return task;
+			}));
 	}
 
 	function handleOnAddTask(taskStr)
@@ -82,15 +95,34 @@ export default function TodoList()
 		);
 	}
 
+	function onListChanged(listId)
+	{
+		setCurrentListId(listId);
+	}
 
-	const currentListTasks = tasks.filter(task => task.listId === currentListId);
+	function getListTasks(listId)
+	{
+		return (
+			tasks.filter(task => task.listId === listId)
+		);
+	}
 
 	return (
 		<>
-			<SideBar lists={lists} />
+			<Sidebar
+				lists={lists}
+				onListChanged={onListChanged}
+				currentListId={currentListId} />
+
 			<div className='panel todo-list'>
-				<TasksContainer handleOnTaskChecked={handleOnTaskChecked} tasks={tasks} />
-				<AddTaskInput handleOnAddTask={handleOnAddTask} />
+
+				<TasksContainer
+					handleOnTaskChecked={handleOnTaskChecked}
+					tasks={getListTasks(currentListId)} />
+
+				<AddTaskInput
+					handleOnAddTask={handleOnAddTask} />
+
 			</div>
 		</>
 	)
