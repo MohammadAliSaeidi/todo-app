@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 import TextField from '@mui/material/TextField';
 
-export default function AddTaskInput({ handleOnAddTask })
+export default function AddTaskInput({ handleOnAddTask, inputRef })
 {
 	const [inputContent, setInputContent] = useState("");
 
@@ -22,7 +22,8 @@ export default function AddTaskInput({ handleOnAddTask })
 				fullWidth={true}
 				variant="filled"
 				value={inputContent}
-				onChange={(event) => setInputContent(event.target.value)} />
+				onChange={(event) => setInputContent(event.target.value)}
+				ref={inputRef} />
 
 			<Button
 				variant="contained"

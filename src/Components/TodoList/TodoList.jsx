@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useRef } from 'react';
 import AddTaskInput from './AddTaskInput'
 import TasksContainer from './TasksContainer'
 import Sidebar from './SideBar/Sidebar.jsx'
+
 
 import './TodoList.css'
 import DeleteDialog from './DeleteDialog'
@@ -64,6 +66,8 @@ export default function TodoList()
 
 	const [taskIdToDelete, setTaskIdToDelete] = useState(-1);
 
+	const inputRef = useRef(null);
+
 	function handleOnTaskChecked(event, taskId)
 	{
 		setTasks(
@@ -98,6 +102,8 @@ export default function TodoList()
 				}
 			]
 		);
+
+		inputRef.current.focus();
 	}
 
 	function onListChanged(listId)
@@ -141,7 +147,7 @@ export default function TodoList()
 					onTaskDelete={onDeleteButtonClicked} />
 
 				<AddTaskInput
-					handleOnAddTask={handleOnAddTask} />
+					handleOnAddTask={handleOnAddTask} inputRef={inputRef} />
 
 			</div>
 
