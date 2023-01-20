@@ -1,113 +1,98 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import AddTaskInput from './AddTaskInput'
 import TasksContainer from './TasksContainer'
+import SideBar from './SideBar/SideBar.jsx'
 
 import './TodoList.css'
 
-export default class TodoList extends Component
+export default function TodoList()
 {
-	constructor(props)
-	{
-		super(props);
-		this.state = {
+	const [currentListId, setCurrentListId] = useState(1);
 
-			currentListId: 1,
+	const [lists, setLists] = useState({
+		listId: 1,
+		listName: 'Daily tasks'
+	});
 
-			tasks: [
-				{
-					listId: 1,
-					taskId: 0,
-					text: 'Wash the dishes',
-					done: false
-				},
-				{
-					listId: 1,
-					taskId: 1,
-					text: 'Turn off the TV',
-					done: false
-				},
-				{
-					listId: 1,
-					taskId: 2,
-					text: 'Create react project',
-					done: false
-				},
-				{
-					listId: 1,
-					taskId: 3,
-					text: 'Wake up',
-					done: true
-				},
-				{
-					listId: 1,
-					taskId: 4,
-					text: 'Brush your teeth',
-					done: true
-				},
-			],
-		};
-
-		this.handleOnTaskChecked = this.handleOnTaskChecked.bind(this);
-		this.handleOnAddTask = this.handleOnAddTask.bind(this);
-	}
-
-	handleOnTaskChecked(event, taskId)
-	{
-
-		console.log(this.state.tasks.find(task => task.listId === this.state.currentListId && task.taskId === taskId));
-
-		this.setState(prevState =>
+	const [tasks, setTasks] = useState([
 		{
-			return {
-				...prevState,
-				tasks: prevState.tasks.map(task =>
-				{
-					if (taskId === task.taskId)
-					{
-						return {
-							...task,
-							done: event.target.checked
-						}
-					}
-					return task;
-				})
+			listId: 1,
+			taskId: 0,
+			text: 'Wash the dishes',
+			done: false
+		},
+		{
+			listId: 1,
+			taskId: 1,
+			text: 'Turn off the TV',
+			done: false
+		},
+		{
+			listId: 1,
+			taskId: 2,
+			text: 'Create react project',
+			done: false
+		},
+		{
+			listId: 1,
+			taskId: 3,
+			text: 'Wake up',
+			done: true
+		},
+		{
+			listId: 1,
+			taskId: 4,
+			text: 'Brush your teeth',
+			done: true
+		},
+	]);
+
+	function handleOnTaskChecked(event, taskId)
+	{
+		setTasks(tasks.map(task =>
+		{
+			if (taskId === task.taskId)
+			{
+				return {
+					...task,
+					done: event.target.checked
+				}
 			}
-		});
+			return task;
+		}));
 	}
 
-	handleOnAddTask(event, taskStr)
+	function handleOnAddTask(taskStr)
 	{
 		if (taskStr === "")
 		{
 			return;
 		}
 
-		this.setState(prevState =>
-		{
-			return {
-				...prevState,
-				tasks: [
-					...prevState.tasks,
-					{
-						listId: prevState.currentListId,
-						taskId: (prevState.tasks.at(-1).taskId) + 1,
-						text: taskStr,
-						done: false
-					}
-				]
-			}
-		});
+		setTasks(
+			[
+				...tasks,
+				{
+					listId: currentListId,
+					taskId: (tasks.at(-1).taskId) + 1,
+					text: taskStr,
+					done: false
+				}
+			]
+		);
 	}
 
-	render()
-	{
-		const tasks = this.state.tasks.filter(task => task.listId === this.state.currentListId);
-		console.log(tasks);
-		return (
+
+	const currentListTasks = tasks.filter(task => task.listId === currentListId);
+
+	return (
+		<>
+			<SideBar lists={lists} />
 			<div className='panel todo-list'>
-				<TasksContainer handleOnTaskChecked={this.handleOnTaskChecked} tasks={tasks} />
-				<AddTaskInput handleOnAddTask={this.handleOnAddTask} />
+				<TasksContainer handleOnTaskChecked={handleOnTaskChecked} tasks={tasks} />
+				<AddTaskInput handleOnAddTask={handleOnAddTask} />
 			</div>
-		)
-	}
+		</>
+	)
+
 }

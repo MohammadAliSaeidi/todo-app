@@ -10,7 +10,7 @@ export default function AddTaskInput({ handleOnAddTask })
 
 	function handleOnAddButtonClicked(event)
 	{
-		handleOnAddTask(event, inputContent);
+		handleOnAddTask(inputContent);
 		setInputContent("");
 	}
 
