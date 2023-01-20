@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 
-import './SideBar.css'
+import './Sidebar.css'
 import { useState } from 'react'
 
 export default function Sidebar({ lists, onListChanged, currentListId })
@@ -23,12 +22,20 @@ export default function Sidebar({ lists, onListChanged, currentListId })
 	}
 
 	return (
-		<div className='panel sidebar'>
+		<div className='sidebar'>
 			<Tabs
 				onChange={handleChange}
 				value={value}
-				orientation={'vertical'}>
+				orientation="vertical"
+				variant="scrollable"
+				sx={{
+					flexGrow: 1,
+					borderRight: 1,
+					borderColor: 'divider'
+				}}>
+
 				{sidebarLists}
+
 			</Tabs>
 		</div>
 	)

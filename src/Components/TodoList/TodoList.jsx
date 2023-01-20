@@ -1,9 +1,10 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import AddTaskInput from './AddTaskInput'
 import TasksContainer from './TasksContainer'
 import Sidebar from './SideBar/Sidebar.jsx'
 
 import './TodoList.css'
+import DeleteDialog from './DeleteDialog'
 
 export default function TodoList()
 {
@@ -59,6 +60,10 @@ export default function TodoList()
 		}
 	]);
 
+	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+	const [taskIdToDelete, setTaskIdToDelete] = useState(-1);
+
 	function handleOnTaskChecked(event, taskId)
 	{
 		setTasks(
@@ -107,6 +112,20 @@ export default function TodoList()
 		);
 	}
 
+	function onDeleteButtonClicked(taskId)
+	{
+		console.log(`onDeleteButtonClicked ${taskId}`);
+		setOpenDeleteDialog(true);
+		setTaskIdToDelete(taskId);
+	}
+
+	function deleteTask()
+	{
+		setTasks(tasks.filter(task => task.taskId !== taskIdToDelete));
+		setTaskIdToDelete(-1);
+		setOpenDeleteDialog(false);
+	}
+
 	return (
 		<>
 			<Sidebar
@@ -114,17 +133,19 @@ export default function TodoList()
 				onListChanged={onListChanged}
 				currentListId={currentListId} />
 
-			<div className='panel todo-list'>
+			<div className='todo-list'>
 
 				<TasksContainer
 					handleOnTaskChecked={handleOnTaskChecked}
-					tasks={getListTasks(currentListId)} />
+					tasks={getListTasks(currentListId)}
+					onTaskDelete={onDeleteButtonClicked} />
 
 				<AddTaskInput
 					handleOnAddTask={handleOnAddTask} />
 
 			</div>
+
+			<DeleteDialog open={openDeleteDialog} deleteTask={deleteTask} />
 		</>
 	)
-
 }
