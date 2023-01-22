@@ -111,11 +111,9 @@ export default function TodoList()
 		setCurrentListId(listId);
 	}
 
-	function getListTasks(listId)
+	function getTasksList(listId)
 	{
-		return (
-			tasks.filter(task => task.listId === listId)
-		);
+		return tasks.filter(task => task.listId === listId);
 	}
 
 	function onDeleteButtonClicked(taskId)
@@ -143,7 +141,7 @@ export default function TodoList()
 
 				<TasksContainer
 					handleOnTaskChecked={handleOnTaskChecked}
-					tasks={getListTasks(currentListId)}
+					tasks={getTasksList(currentListId)}
 					onTaskDelete={onDeleteButtonClicked} />
 
 				<AddTaskInput
