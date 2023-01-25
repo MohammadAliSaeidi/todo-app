@@ -4,13 +4,17 @@ import Button from '@mui/material/Button';
 
 import TextField from '@mui/material/TextField';
 
-export default function AddTaskInput({ handleOnAddTask, inputRef })
+type Props = {
+	handleOnAddTask: (taskStr: string) => void;
+}
+
+export default function AddTaskInput(props: Props)
 {
 	const [inputContent, setInputContent] = useState("");
 
-	function handleOnAddButtonClicked(event)
+	function handleOnAddButtonClicked()
 	{
-		handleOnAddTask(inputContent);
+		props.handleOnAddTask(inputContent);
 		setInputContent("");
 	}
 
@@ -23,7 +27,7 @@ export default function AddTaskInput({ handleOnAddTask, inputRef })
 				variant="filled"
 				value={inputContent}
 				onChange={(event) => setInputContent(event.target.value)}
-				ref={inputRef} />
+				autoFocus />
 
 			<Button
 				variant="contained"

@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { useRef } from 'react';
 import AddTaskInput from './AddTaskInput'
 import TasksContainer from './TasksContainer'
-import Sidebar from './SideBar/Sidebar.jsx'
-
 
 import './TodoList.css'
 import DeleteDialog from './DeleteDialog'
+import TodoTask from '../../Types/TodoTask'
+import TodoListModel from '../../Types/TodoListModel'
+import Sidebar from './Sidebar/Sidebar'
 
 export default function TodoList()
 {
 	const [currentListId, setCurrentListId] = useState(1);
 
-	const [lists, setLists] = useState([
+	const [lists, setLists] = useState<TodoListModel[]>([
 		{
 			listId: 1,
 			listName: 'Daily tasks'
@@ -23,7 +23,7 @@ export default function TodoList()
 		}
 	]);
 
-	const [tasks, setTasks] = useState([
+	const [tasks, setTasks] = useState<TodoTask[]>([
 		{
 			listId: 1,
 			taskId: 0,
@@ -66,9 +66,7 @@ export default function TodoList()
 
 	const [taskIdToDelete, setTaskIdToDelete] = useState(-1);
 
-	const inputRef = useRef(null);
-
-	function handleOnTaskChecked(event, taskId)
+	function handleOnTaskChecked(isChecked: boolean, taskId: number)
 	{
 		setTasks(
 			tasks.map(task =>
@@ -77,46 +75,44 @@ export default function TodoList()
 				{
 					return {
 						...task,
-						done: event.target.checked
+						done: isChecked
 					}
 				}
 				return task;
 			}));
 	}
 
-	function handleOnAddTask(taskStr)
+	function handleOnAddTask(taskStr: string)
 	{
 		if (taskStr === "")
 		{
 			return;
 		}
 
-		setTasks(
+		setTasks(prevTasks =>
 			[
-				...tasks,
+				...prevTasks,
 				{
 					listId: currentListId,
-					taskId: (tasks.at(-1).taskId) + 1,
+					taskId: (prevTasks[prevTasks.length - 1].taskId) + 1,
 					text: taskStr,
 					done: false
 				}
 			]
 		);
-
-		inputRef.current.focus();
 	}
 
-	function onListChanged(listId)
+	function onListChanged(listId: number)
 	{
 		setCurrentListId(listId);
 	}
 
-	function getTasksList(listId)
+	function getTasksList(listId: number)
 	{
 		return tasks.filter(task => task.listId === listId);
 	}
 
-	function onDeleteButtonClicked(taskId)
+	function onDeleteButtonClicked(taskId: number)
 	{
 		console.log(`onDeleteButtonClicked ${taskId}`);
 		setOpenDeleteDialog(true);
@@ -145,7 +141,7 @@ export default function TodoList()
 					onTaskDelete={onDeleteButtonClicked} />
 
 				<AddTaskInput
-					handleOnAddTask={handleOnAddTask} inputRef={inputRef} />
+					handleOnAddTask={handleOnAddTask} />
 
 			</div>
 

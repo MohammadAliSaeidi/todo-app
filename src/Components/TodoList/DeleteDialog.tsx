@@ -1,13 +1,18 @@
 import { Button, Dialog, DialogContent, DialogTitle, Typography } from '@mui/material'
 import React from 'react'
 
-export default function DeleteDialog({ open, deleteTask })
+type Props = {
+	open: boolean;
+	deleteTask: () => void
+}
+
+export default function DeleteDialog(props: Props)
 {
 	return (
-		<Dialog open={open}>
+		<Dialog open={props.open}>
 			<DialogTitle>Delete this Task?</DialogTitle>
 			<DialogContent>
-				<Button variant='contained' onClick={() => deleteTask()}>Delete</Button>
+				<Button variant='contained' onClick={() => props.deleteTask()}>Delete</Button>
 			</DialogContent>
 		</Dialog >
 	)
